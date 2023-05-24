@@ -34,6 +34,5 @@ final class DefaultHTTPClient: HTTPClient {
             return try await urlSession.data(for: urlRequest)
         } catch {
             throw RequestError.couldNotConnectToServer
-        }
-    }
+        }}
 }

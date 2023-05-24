@@ -11,7 +11,7 @@ import Network
 @testable import NetworkSample
 @testable import NetworkTestSources
 
-class RickMortyRepositoryTests: XCTestCase {
+final class RickMortyRepositoryTests: XCTestCase {
 
     var sut: RickMortyRepository!
     var networkServiceMock: NetworkServiceMock!
