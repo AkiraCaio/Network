@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum RequestError: Error {
+public enum RequestError: Error, Equatable {
     case couldNotConnectToServer
     case noInternet
     case decode

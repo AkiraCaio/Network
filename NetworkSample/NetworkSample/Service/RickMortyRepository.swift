@@ -14,11 +14,17 @@ protocol RickMortysRepositoryProtocol {
 
 final class RickMortyRepository: RickMortysRepositoryProtocol {
 
+    // MARK: - Properties
+
     private let networkService: NetworkService
+
+    // MARK: - Init
 
     init(networkService: NetworkService = DefaultNetworkService()) {
         self.networkService = networkService
     }
+
+    // MARK: - Methods
 
     func getCharactersList(page: Int) async -> Result<RickMortyCharacterList, RequestError> {
         return await networkService.request(endpoint: RickMortyEndpoint.charactersList(page: page),

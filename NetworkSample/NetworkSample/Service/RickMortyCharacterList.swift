@@ -24,7 +24,14 @@ extension RickMortyCharacterList {
 
     // MARK: - Result
 
-    struct Result: Codable {
+    struct Result: Codable, Equatable {
+        static func == (lhs: RickMortyCharacterList.Result,
+                        rhs: RickMortyCharacterList.Result) -> Bool {
+            return (
+                lhs.id == rhs.id &&
+                lhs.name == rhs.name)
+        }
+
         let id: Int
         let name: String
         let status: Status
@@ -60,5 +67,15 @@ extension RickMortyCharacterList {
         case alive = "Alive"
         case dead = "Dead"
         case unknown = "unknown"
+    }
+}
+
+extension RickMortyCharacterList {
+    func isSameResult(otherResults: [RickMortyCharacterList.Result]) -> Bool {
+        if results.count != otherResults.count {
+            return false
+        }
+
+        return zip(results, otherResults).filter {$0.0 != $0.1}.isEmpty
     }
 }
