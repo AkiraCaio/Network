@@ -13,7 +13,7 @@ public final class NetworkServiceMock: NetworkService {
     // MARK: - Properties
 
     var requestCompletion: ((Endpoint) async -> Result<Decodable, RequestError>)?
-    var requestWithoutModelCompletion: ((Endpoint) async -> Result<[String: AnyObject], RequestError>)?
+    var requestWithoutModelCompletion: ((Endpoint) async -> Result<[String: Any], RequestError>)?
 
     // MARK: - Methods
 
@@ -33,7 +33,7 @@ public final class NetworkServiceMock: NetworkService {
         }
     }
 
-    public func request(endpoint: Network.Endpoint) async -> Result<[String : AnyObject], Network.RequestError> {
+    public func request(endpoint: Network.Endpoint) async -> Result<[String : Any], Network.RequestError> {
         guard let safeRequestCompletion = requestWithoutModelCompletion else {
             return .failure(.unkown)
         }

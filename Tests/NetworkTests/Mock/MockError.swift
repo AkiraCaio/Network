@@ -9,4 +9,5 @@ import Foundation
 
 enum MockError: Error {
     case missingCompletion
+    case downcastError
 }

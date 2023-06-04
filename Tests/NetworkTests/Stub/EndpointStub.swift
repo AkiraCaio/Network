@@ -11,15 +11,21 @@ import Foundation
 
 enum EndpointStub {
     case stub
+    case invalid
 }
 
 extension EndpointStub: Endpoint {
     var host: String {
-        return "testHost"
+        return "testhost"
     }
 
     var path: String {
-        return "testPatch"
+        switch self {
+        case .stub:
+            return "/testPatch"
+        case .invalid:
+            return "invalid"
+        }
     }
 
     var method: Network.RequestMethod {

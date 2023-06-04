@@ -9,7 +9,7 @@ import Foundation
 
 public protocol NetworkService {
     func request<Model:Decodable>(endpoint: Endpoint, modelType: Model.Type) async -> Result<Model, RequestError>
-    func request(endpoint: Endpoint) async -> Result<[String: AnyObject], RequestError>
+    func request(endpoint: Endpoint) async -> Result<[String: Any], RequestError>
 }
 
 public final class DefaultNetworkService: NetworkService {
@@ -18,8 +18,8 @@ public final class DefaultNetworkService: NetworkService {
 
     private let httpClient: HTTPClient
     private let errorChecker: ErrorCheckerProtocol
-    private let networkResponseParser: NetworkResponseParserProtocol
     private let connectionChecker: ConnectionCheckerProtocol
+    private var networkResponseParser: NetworkResponseParserProtocol
 
     // MARK: - Init
 
@@ -58,7 +58,7 @@ public final class DefaultNetworkService: NetworkService {
         }
     }
 
-    public func request(endpoint: Endpoint) async -> Result<[String : AnyObject], RequestError> {
+    public func request(endpoint: Endpoint) async -> Result<[String : Any], RequestError> {
         do {
             try connectionChecker.isConnectedToNetwork()
             let (data, urlResponse) = try await httpClient.request(endpoint: endpoint)
