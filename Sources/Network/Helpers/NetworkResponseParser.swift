@@ -23,7 +23,7 @@ struct NetworkResponseParser: NetworkResponseParserProtocol {
     // MARK: - Init
 
     init(jsonDecoder: JSONDecoderProtocol = JSONDecoder(),
-         jsonSerialization: JSONSerializationProtocol = JSONSerialization()) {
+         jsonSerialization: JSONSerializationProtocol = JSONSerializationWrappper()) {
         self.jsonDecoder = jsonDecoder
         self.jsonSerialization = jsonSerialization
     }

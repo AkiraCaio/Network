@@ -34,7 +34,7 @@ final class CreateURLTests: XCTestCase {
 
             // Then
             guard let safeValidateURLRequest = validateURLRequest else {
-                return XCTFail("")
+                return XCTFail("Should have urlRequest")
             }
             XCTAssertEqual(safeValidateURLRequest.url, expectedResponse.url)
             XCTAssertEqual(safeValidateURLRequest.httpMethod, expectedResponse.httpMethod)
