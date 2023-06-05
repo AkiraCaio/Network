@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum RequestError: Error {
+public enum RequestError: Error, Equatable {
     case couldNotConnectToServer
     case noInternet
     case decode
@@ -16,19 +16,4 @@ public enum RequestError: Error {
     case unathorized
     case unexpectedStatusCode( statusCode: Int, errorMessage: String?)
     case unkown
-
-    public var customMessage: String {
-        switch self {
-        case .decode:
-            return "Decode error"
-        case .unathorized:
-            return "Session expired"
-        case .couldNotConnectToServer:
-            return "Could not connect to the server."
-        case .unexpectedStatusCode(let statusCode, let errorMessage):
-            return "status code: \(statusCode), message: \(errorMessage ?? "")"
-        default:
-            return "Unkown error"
-        }
-    }
 }

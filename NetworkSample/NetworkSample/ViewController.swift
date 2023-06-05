@@ -57,7 +57,7 @@ class ViewController: UIViewController {
                     self?.tableView.reloadData()
                 }
             case .failure(let failure):
-                print(failure.customMessage)
+                print(failure.localizedDescription)
             case .none:
                 break
             }

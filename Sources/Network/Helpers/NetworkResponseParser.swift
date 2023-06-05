@@ -8,38 +8,50 @@
 import Foundation
 
 protocol NetworkResponseParserProtocol {
-    func dataToObject<Model: Decodable>(data: Data,
-                                        modelType: Model.Type) throws -> Model
-    func dataToDictionary(data: Data) throws -> [String: AnyObject]
+    mutating func dataToObject<Model: Decodable>(data: Data,
+                                                 modelType: Model.Type) throws -> Model
+    func dataToDictionary(data: Data) throws -> [String: Any]
 }
 
 struct NetworkResponseParser: NetworkResponseParserProtocol {
 
+    // MARK: - Properties
+
+    private var jsonDecoder: JSONDecoderProtocol
+    private let jsonSerialization: JSONSerializationProtocol
+
+    // MARK: - Init
+
+    init(jsonDecoder: JSONDecoderProtocol = JSONDecoder(),
+         jsonSerialization: JSONSerializationProtocol = JSONSerializationWrappper()) {
+        self.jsonDecoder = jsonDecoder
+        self.jsonSerialization = jsonSerialization
+    }
+
     // MARK: - Methods
 
-    func dataToObject<Model>(data: Data,
-                             modelType: Model.Type) throws -> Model where Model : Decodable {
-        let decode = JSONDecoder()
-        decode.keyDecodingStrategy = .convertFromSnakeCase
-        decode.dateDecodingStrategy = .secondsSince1970
+    mutating func dataToObject<Model>(data: Data,
+                                      modelType: Model.Type) throws -> Model where Model : Decodable {
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .secondsSince1970
+
         do {
-            return try decode.decode(modelType, from: data)
+            return try jsonDecoder.decode(modelType, from: data)
         } catch {
             throw RequestError.decode
         }
     }
 
-    func dataToDictionary(data: Data) throws -> [String: AnyObject] {
+    func dataToDictionary(data: Data) throws -> [String: Any] {
         do {
-            let json = try JSONSerialization.jsonObject(with: data,
+            let json = try jsonSerialization.jsonObject(with: data,
                                                         options: .mutableContainers)
-            guard let dictionaryJson = json as? [String: AnyObject] else { throw RequestError.decode
+            guard let dictionaryJson = json as? [String: Any] else { throw RequestError.decode
             }
 
             return dictionaryJson
         } catch {
             throw RequestError.decode
         }
-
     }
 }
