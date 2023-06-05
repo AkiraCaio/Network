@@ -7,11 +7,34 @@
 
 import SystemConfiguration
 
+protocol NetworkReachabilityProtocol {
+    func SCNetworkReachabilityGetFlags(_ target: SCNetworkReachability,
+                                       _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>) -> Bool
+}
+
+final class NetworkReachability: NetworkReachabilityProtocol {
+    func SCNetworkReachabilityGetFlags(_ target: SCNetworkReachability,
+                                       _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>) -> Bool {
+        return SystemConfiguration.SCNetworkReachabilityGetFlags(target, flags)
+    }
+
+}
+
 protocol ConnectionCheckerProtocol {
     func isConnectedToNetwork() throws
 }
 
 final class ConnectionChecker: ConnectionCheckerProtocol {
+
+    // MARK: - Properties
+
+    let networkReachability: NetworkReachabilityProtocol
+
+    // MARK: - Init
+
+    init(networkReachability: NetworkReachabilityProtocol = NetworkReachability()) {
+        self.networkReachability = networkReachability
+    }
 
     // MARK: - Methods
 
@@ -27,7 +50,7 @@ final class ConnectionChecker: ConnectionCheckerProtocol {
             }
         }
         var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
-        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
+        if networkReachability.SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
             throw RequestError.noInternet
         }
         // Working for Cellular and WIFI
