@@ -19,8 +19,8 @@ protocol JSONSerializationProtocol {
     func jsonObject(with data: Data, options: JSONSerialization.ReadingOptions) throws -> Any
 }
 
-extension JSONSerialization: JSONSerializationProtocol {
-    func jsonObject(with data: Data, options: ReadingOptions) throws -> Any {
-        try Self.jsonObject(with: data, options: options)
+final class JSONSerializationWrappper: JSONSerializationProtocol {
+    func jsonObject(with data: Data, options: JSONSerialization.ReadingOptions) throws -> Any {
+        try JSONSerialization.jsonObject(with: data, options: options)
     }
 }

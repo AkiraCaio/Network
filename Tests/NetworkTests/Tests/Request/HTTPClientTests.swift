@@ -54,16 +54,14 @@ final class HTTPClientTests: XCTestCase {
             // Then
             guard let safeValidateEndPoint = validateEndpoint as? EndpointStub,
                   let safeValidateURLRequest = validateURLRequest else {
-                return XCTFail()
+                return XCTFail("Should have validate Endpoint and URLRequest")
             }
 
             XCTAssertEqual(safeValidateEndPoint, expectedEndpoint)
             XCTAssertEqual(safeValidateURLRequest.url, expectedURLRequest.url)
             XCTAssertEqual(safeValidateURLRequest.httpMethod, expectedURLRequest.httpMethod)
-        } catch is MockError {
-            XCTFail("Should have to implements completions in mocks")
         } catch {
-            XCTFail("")
+            XCTFail("Should not have any error")
         }
     }
 

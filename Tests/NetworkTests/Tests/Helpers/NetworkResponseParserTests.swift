@@ -28,7 +28,6 @@ final class NetworkResponseParserTests: XCTestCase {
         sut = nil
     }
 
-
     func testDataToObject_WhenDecodeThrowError_ShouldThrowRequestError() {
 
         // Given
@@ -39,7 +38,7 @@ final class NetworkResponseParserTests: XCTestCase {
                 throw RequestError.unkown
             }
 
-            //When
+            // When
             _ = try sut.dataToObject(data: Data(), modelType: DecodableStub.self)
 
             // Then
@@ -64,7 +63,7 @@ final class NetworkResponseParserTests: XCTestCase {
                 return expectedDecodable
             }
 
-            //When
+            // When
             let validateDecodable = try sut.dataToObject(data: expectedData,
                                                          modelType: DecodableStub.self)
 
@@ -139,7 +138,7 @@ final class NetworkResponseParserTests: XCTestCase {
 
         do {
 
-            //When
+            // When
             let result = try sut.dataToDictionary(data: expectedData)
 
             // Then
