@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DecodableStub: Decodable {
+struct DecodableStub: Codable {
     var name: String
     var isTest: Bool
 }

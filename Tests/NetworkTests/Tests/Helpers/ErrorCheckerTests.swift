@@ -89,9 +89,9 @@ final class ErrorCheckerTests: XCTestCase {
 
         let expectedError = RequestError.unexpectedStatusCode(statusCode: expectedStatusCode, errorMessage: expectedErrorMessage)
 
-        networkResponseParserMock.dictionary = [
-            "message": expectedErrorMessage
-        ]
+        networkResponseParserMock.dataToDictionaryCompletion = { _ in
+            return ["message": expectedErrorMessage]
+        }
 
         do {
 

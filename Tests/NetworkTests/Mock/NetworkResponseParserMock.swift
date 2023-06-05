@@ -11,31 +11,22 @@ import Foundation
 
 final class NetworkResponseParserMock: NetworkResponseParserProtocol {
 
-    private(set) var data: Data?
-
-    var object: Decodable?
+    var dataToObjectCompletion: ((Data) throws -> Decodable)?
     func dataToObject<Model>(data: Data, modelType: Model.Type) throws -> Model where Model : Decodable {
-        self.data = data
 
-        guard let safeObject = object else {
+        guard let completion = dataToObjectCompletion else {
             throw MockError.missingCompletion
         }
 
-        guard let objectModel = safeObject as? Model else {
+        guard let model = try completion(data) as? Model else {
             throw MockError.downcastError
         }
 
-        return objectModel
+        return model
     }
 
-    var dictionary: [String: Any]?
+    var dataToDictionaryCompletion: ((Data) throws -> [String: Any])?
     func dataToDictionary(data: Data) throws -> [String : Any] {
-        self.data = data
-
-        guard let safeDictionary = dictionary else {
-            throw MockError.missingCompletion
-        }
-
-        return safeDictionary
+        return try dataToDictionaryCompletion?(data) ?? [:]
     }
 }
